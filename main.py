@@ -1,6 +1,7 @@
 from Instrument import *
-from Page import  Song, Track
+from Song import  Song, Track
 from Player import MusicPlayer
+import os 
 
 def note_to_frequency(note: str) -> float:
     """
@@ -93,20 +94,30 @@ def main():
     
     testplayer = MusicPlayer(speed=130, beat_num_per_bar=4, beat_unit=4)
     testplayer.save_page_waveform(testpage, "data/test_page.wav")
+    testplayer.save_song(testpage, "data/test_page.smid")
     testplayer.play_page(testpage)
         
     
 def test():
-    ins1 = SineInstrument()
-    ins1.add_note(Note(note_to_frequency('A0'), 1))
-    ins1.add_note(Note(note_to_frequency('R'), 1/2))
-    ins1.add_note(Note(note_to_frequency('C8'), 1))
-    testtrack = Track(ins1)
-    testpage =  Song(title="Test Page", content="This is a test page.")
-    testpage.add_track(testtrack)
-    testplayer = MusicPlayer(speed=120, beat_num_per_bar=4, beat_unit=4)
-    testplayer.play_page(testpage)  
-    
+    # ----------------------------
+    # ins1 = SineInstrument()
+    # ins1.add_note(Note(note_to_frequency('A0'), 1))
+    # ins1.add_note(Note(note_to_frequency('R'), 1/2))
+    # ins1.add_note(Note(note_to_frequency('C8'), 1))
+    # testtrack = Track(ins1)
+    # testpage =  Song(title="Test Page", content="This is a test page.")
+    # testpage.add_track(testtrack)
+    # testplayer = MusicPlayer(speed=120, beat_num_per_bar=4, beat_unit=4)
+    # testplayer.play_page(testpage)  
+    # ----------------------------
+    player = MusicPlayer(speed=60, beat_num_per_bar=4, beat_unit=4)
+    song = player.load_song("data/test_page.smid")
+    if song:
+        player.play_page(song)
+    else:
+        print("Failed to load song.")
+    # ----------------------------
+
 if __name__ == "__main__":
-    main()
-    # test()  # Uncomment to run the test function
+    # main()
+    test()  # Uncomment to run the test function

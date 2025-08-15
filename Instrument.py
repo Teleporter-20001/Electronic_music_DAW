@@ -35,7 +35,7 @@ class Note:
 class BaseInstrument:
     def __init__(self, name: str):
         self.name = name
-        self.mainKey = 'base'   # 用于标识乐器的种类，与名字区分是为了方便命名
+        self.mainKey = 'base'   # 用于标识乐器的种类，与名字区分是为了方便命名，而且重建的时候依赖这个来确定乐器类型
         self.generator: Callable = lambda x: x - x  # 用于生成波形的函数，基类默认值为全0
         self.notes: list[Note] = []
 
