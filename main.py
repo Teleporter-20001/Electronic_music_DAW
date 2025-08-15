@@ -6,7 +6,7 @@ import os
 def note_to_frequency(note: str) -> float:
     """
     将音名(如 'A4', 'C#3', 'Bb2') 转换为频率(Hz)。
-    支持范围: A1 ~ A8 -> A0 ~ C8
+    支持范围: A0 ~ C8
     """
     # 休止符
     if note == 'R':
@@ -64,23 +64,23 @@ def main():
         melody.add_note(Note(note_to_frequency('C#5'), 1/4))
         melody.add_note(Note(note_to_frequency('Bb4'), 1/8))
         melody.add_note(Note(note_to_frequency('G#4'), 1/4))
-        melody.add_note(Note(note_to_frequency('F#4'), 3/8, quantize=False))  # bar 4 end
+        melody.add_note(Note(note_to_frequency('F#4'), 3/8))  # bar 4 end
         
     
     ground_low = SineInstrument()
     for _ in range(4):
         for note in ['B1', 'C#2', 'Eb2', 'Bb1']:
-            ground_low.add_note(Note(note_to_frequency(note), 3/8, quantize=False))
-            ground_low.add_note(Note(note_to_frequency(note), 3/8, quantize=False))
-            ground_low.add_note(Note(note_to_frequency(note), 1/4, quantize=False))
+            ground_low.add_note(Note(note_to_frequency(note), 3/8))
+            ground_low.add_note(Note(note_to_frequency(note), 3/8))
+            ground_low.add_note(Note(note_to_frequency(note), 1/4))
     ground_low.add_note(Note(note_to_frequency('B1'), 1/4))
             
     ground_high = SineInstrument()
     for _ in range(4):
         for note in ['B2', 'C#3', 'Eb3', 'Bb2']:
-            ground_high.add_note(Note(note_to_frequency(note), 3/8, quantize=False))
-            ground_high.add_note(Note(note_to_frequency(note), 3/8, quantize=False))
-            ground_high.add_note(Note(note_to_frequency(note), 1/4, quantize=False))
+            ground_high.add_note(Note(note_to_frequency(note), 3/8))
+            ground_high.add_note(Note(note_to_frequency(note), 3/8))
+            ground_high.add_note(Note(note_to_frequency(note), 1/4))
     ground_high.add_note(Note(note_to_frequency('B2'), 1/4))
 
     melodyTrack = Track(melody)
