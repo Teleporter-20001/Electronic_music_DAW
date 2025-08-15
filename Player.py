@@ -16,6 +16,7 @@ class MusicPlayer:
         'noise': NoiseInstrument,
         'sine_square': SineSquareInstrument,
         'gtj': GtjInstrument,
+        'decay_sine': DecaySineInstrument,
     }
     
     def __init__(self, speed: int, beat_num_per_bar: int = 4, beat_unit: int = 4):

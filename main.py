@@ -45,7 +45,7 @@ def note_to_frequency(note: str) -> float:
 
 def main():
 
-    melody = SineInstrument()
+    melody = DecaySineInstrument()
     melody.add_note(Note(note_to_frequency('F#4'), 1/4))
     for _ in range(4):
         melody.add_note(Note(note_to_frequency('C#5'), 1/4))
@@ -67,7 +67,7 @@ def main():
         melody.add_note(Note(note_to_frequency('F#4'), 3/8))  # bar 4 end
         
     
-    ground_low = SineInstrument()
+    ground_low = DecaySineInstrument()
     for _ in range(4):
         for note in ['B1', 'C#2', 'Eb2', 'Bb1']:
             ground_low.add_note(Note(note_to_frequency(note), 3/8))
@@ -75,7 +75,7 @@ def main():
             ground_low.add_note(Note(note_to_frequency(note), 1/4))
     ground_low.add_note(Note(note_to_frequency('B1'), 1/4))
             
-    ground_high = SineInstrument()
+    ground_high = DecaySineInstrument()
     for _ in range(4):
         for note in ['B2', 'C#3', 'Eb3', 'Bb2']:
             ground_high.add_note(Note(note_to_frequency(note), 3/8))

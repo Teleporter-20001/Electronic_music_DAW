@@ -95,6 +95,13 @@ class GtjInstrument(BaseInstrument):
         self.generator = lambda x: abs(np.sin(x)) - np.pi/2  # 绝对值正弦波
 
 
+class DecaySineInstrument(BaseInstrument):
+    def __init__(self, name="Decay Sine Instrument"):
+        super().__init__(name)
+        self.mainKey = 'decay_sine'
+        self.generator = lambda x: np.sin(x) * np.exp(-1.6 * x)  # 衰减正弦波
+
+
 def trans(instrument: BaseInstrument, newname: str, newclass: type) -> BaseInstrument:
     """
     将一个 InstrumentBase 的实例拷贝为另一个类型的实例。
