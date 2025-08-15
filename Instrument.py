@@ -32,7 +32,7 @@ class Note:
 
     
     
-class InstrumentBase:
+class BaseInstrument:
     def __init__(self, name: str):
         self.name = name
         self.mainKey = 'base'   # 用于标识乐器的种类，与名字区分是为了方便命名
@@ -53,53 +53,53 @@ class InstrumentBase:
         return f"InstrumentBase(name={self.name}, notes={self.notes})"
     
     
-class SineInstrument(InstrumentBase):
+class SineInstrument(BaseInstrument):
     def __init__(self, name="Sine Wave Instrument"):
         super().__init__(name)
         self.mainKey = 'sine'
         self.generator = np.sin  # 这里只使用相位
         
         
-class SquareInstrument(InstrumentBase):
+class SquareInstrument(BaseInstrument):
     def __init__(self, name="Square Wave Instrument"):
         super().__init__(name)
         self.mainKey = 'square'
         self.generator = signal.square
 
 
-class TriangleInstrument(InstrumentBase):
+class TriangleInstrument(BaseInstrument):
     def __init__(self, name="Triangle Wave Instrument"):
         super().__init__(name)
         self.mainKey = 'triangle'
         self.generator = signal.sawtooth
 
 
-class NoiseInstrument(InstrumentBase):
+class NoiseInstrument(BaseInstrument):
     def __init__(self, name="Noise Instrument"):
         super().__init__(name)
         self.mainKey = 'noise'
         self.generator = lambda x: np.random.normal(0, 1, size=x.shape)  # 生成白噪声
         
         
-class SineSquareInstrument(InstrumentBase):
+class SineSquareInstrument(BaseInstrument):
     def __init__(self, name="Sine and Square Instrument"):
         super().__init__(name)
         self.mainKey = 'sine_square'
         self.generator = lambda x: np.clip(0.9 * np.sin(x) + 0.1 * signal.square(x), -1, 1)  # 混合正弦波和方波
         
         
-class GtjInstrument(InstrumentBase):
-    def __init__(self, name="Tianjian Instrument"):
+class GtjInstrument(BaseInstrument):
+    def __init__(self, name="Tj Instrument"):
         super().__init__(name)
         self.mainKey = 'gtj'
         self.generator = lambda x: abs(np.sin(x)) - np.pi/2  # 绝对值正弦波
 
 
-def trans(instrument: InstrumentBase, newname: str, newclass: type) -> InstrumentBase:
+def trans(instrument: BaseInstrument, newname: str, newclass: type) -> BaseInstrument:
     """
     将一个 InstrumentBase 的实例拷贝为另一个类型的实例。
     """
-    if not issubclass(newclass, InstrumentBase):
+    if not issubclass(newclass, BaseInstrument):
         raise TypeError("newclass must be a subclass of InstrumentBase")
 
     new_instrument = newclass(name=newname)

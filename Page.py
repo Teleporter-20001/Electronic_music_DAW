@@ -1,15 +1,10 @@
 import Instrument
 import numpy as np
-from scipy import signal
-from typing import Callable
-import soundfile as sf
-import threading
-import time
 
 
 class Track:
 
-    def __init__(self, instrument: Instrument.InstrumentBase) -> None:
+    def __init__(self, instrument: Instrument.BaseInstrument) -> None:
         self.instrument = instrument
         
     def generate_waveform(self, speed: int, beat_num_per_bar: int, beat_unit: int):
