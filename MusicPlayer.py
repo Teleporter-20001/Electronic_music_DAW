@@ -18,7 +18,7 @@ class MusicPlayer:
             return
 
         try:
-            sd.play(mixed_waveform, samplerate=44100)
+            sd.play(mixed_waveform, samplerate=song.sample_rate)
             while sd.get_stream().active:
                 time.sleep(0.1)
         except KeyboardInterrupt:
@@ -43,7 +43,7 @@ class MusicPlayer:
         try:
             if not os.path.exists(os.path.dirname(filename)):
                 os.makedirs(os.path.dirname(filename))
-            sf.write(filename, mixed_waveform, samplerate=44100)
+            sf.write(filename, mixed_waveform, samplerate=song.sample_rate)
             print(f"Waveform saved to {filename}")
         except Exception as e:
             print(f"Error saving waveform: {e}")

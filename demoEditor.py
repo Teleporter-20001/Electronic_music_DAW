@@ -2,7 +2,7 @@ from Note import Note
 from Instruments.DecaySine import DecaySine
 from Tracks.InstrumentTrack import InstrumentTrack
 from Song import Song
-from Player import MusicPlayer
+from MusicPlayer import MusicPlayer
 import Utils
 
 def main():
