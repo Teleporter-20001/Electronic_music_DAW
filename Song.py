@@ -1,75 +1,64 @@
-import Instrument
 import numpy as np
-
-
-class Track:
-
-    def __init__(self, instrument: Instrument.BaseInstrument) -> None:
-        self.instrument = instrument
-        
-    def generate_waveform(self, speed: int, beat_num_per_bar: int, beat_unit: int):
-        sample_rate = 44100
-
-        # 四分音符的时长
-        quarter_duration = (60 / speed) * (4 / beat_unit)
-        # 全音符的时长
-        whole_duration = quarter_duration * 4
-
-        waveform = np.array([], dtype=np.float32)
-
-        for note in self.instrument.notes:
-            # 直接用全音符时长 * 比例
-            duration = whole_duration * note.duration
-            t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
-            wave: np.ndarray = self.instrument.generator(2 * np.pi * note.pitch * t)
-            waveform = np.concatenate((waveform, wave))
-        
-        return waveform
+import importlib
+from Note import Note
+from Instruments.BaseInst import BaseInst
+from Effects.Basefx import Basefx
+from Tracks.InstrumentTrack import InstrumentTrack
+from Settings import Settings
     
 
 class Song:
-    def __init__(self, title: str, content: str, tracks=None):
+    def __init__(
+        self, 
+        title: str = 'Untitled', 
+        content: str = '', 
+        speed: int = Settings.default_speed,
+        beat_num_per_bar: int = Settings.default_beat_num_per_bar,
+        beat_unit: int = Settings.default_beat_unit,
+        sample_rate: int = Settings.default_sample_rate,
+        tracks=None
+    ):
         self.title = title
         self.content = content
-        self.tracks: list[Track] = tracks if tracks is not None else []
+        self.speed = speed
+        self.beat_num_per_bar = beat_num_per_bar
+        self.beat_unit = beat_unit
+        self.sample_rate = sample_rate
+        self.instrumentTracks: list[InstrumentTrack] = tracks if tracks is not None else []
+        self.returnTracks = None    # todo
+        self.mainTrack = None   # todo
 
-    def add_track(self, track: Track):
-        if isinstance(track, Track):
-            self.tracks.append(track)
+    def add_instTrack(self, track: InstrumentTrack):
+        if isinstance(track, InstrumentTrack):
+            self.instrumentTracks.append(track)
         else:
             raise TypeError("Expected an instance of Track")
 
 
-    def remove_track(self, trackname: str):
-        if any(trackname == track.instrument.name for track in self.tracks):
-            self.tracks = [track for track in self.tracks if track.instrument.name != trackname]
-        else:
-            raise ValueError("Track not found in the song")
-                    
-            
-    def generate_mixed_waveform(self, speed: int, beat_num_per_bar: int, beat_unit: int):
+    def remove_instTrack(self, trackname: str):
+        if any(t.name == trackname for t in self.instrumentTracks):
+            self.instrumentTracks = [t for t in self.instrumentTracks if t.name != trackname]
+
+
+    def generate_mixed_waveform(self):
         """生成所有音轨混合后的波形"""
-        if not self.tracks:
+        if not self.instrumentTracks:
             return np.array([])
-        
+
         # 生成所有音轨的波形
         waveforms = []
-        max_length = 0
-        
-        for track in self.tracks:
-            waveform = track.generate_waveform(speed, beat_num_per_bar, beat_unit)
+        for track in self.instrumentTracks:
+            waveform = track.generate_waveform(
+                sample_rate=self.sample_rate,
+                speed=self.speed,
+                beat_unit=self.beat_unit
+            )
             waveforms.append(waveform)
-            max_length = max(max_length, len(waveform))
-        
-        # 将所有波形填充到相同长度
-        for i in range(len(waveforms)):
-            if len(waveforms[i]) < max_length:
-                padding = np.zeros(max_length - len(waveforms[i]))
-                waveforms[i] = np.concatenate((waveforms[i], padding))
-        
+            
+        # 补齐所有波形到相同长度
+        max_length = max(waveform.shape[0] for waveform in waveforms)
+        waveforms = [np.pad(waveform, (0, max_length - waveform.shape[0]), mode='constant') for waveform in waveforms]
+
         # 混合所有波形
-        mixed_waveform = np.sum(waveforms, axis=0) / len(waveforms)  # 平均混合
-        # 简单滤波：去除高频噪声
-        # b, a = signal.butter(6, 0.15, btype='low')
-        # mixed_waveform = signal.filtfilt(b, a, mixed_waveform)
+        mixed_waveform: np.ndarray = np.sum(waveforms, axis=0) / len(waveforms)  # 平均混合
         return mixed_waveform.astype(np.float32)
