@@ -1,5 +1,34 @@
+import os
+import importlib
+
 from Note import Note
-from Instruments.DecaySine import DecaySine
+
+# ------------- import instruments dynamically -------------
+instrument_list_scan_result: list[str] = os.listdir(os.path.join(os.path.dirname(__file__), 'Instruments'))
+instrument_list_scan_result = [os.path.splitext(i)[0] for i in instrument_list_scan_result if i.endswith('.py') and i != '__init__.py']
+instrument_list_scan_result.remove('BaseInst')  # BaseInst is not an instrument for use, it's a base class
+availableInstruments: list[str] = []
+for inst in instrument_list_scan_result:
+    module = importlib.import_module(f'Instruments.{inst}')
+    globals()[inst] = getattr(module, inst)
+    availableInstruments.append(inst)
+# ----------------------------------------------------------
+# from Instruments.DecaySine import DecaySine
+# from Instruments.SquareWave import SquareWave
+
+# ------------ import effects units dynamically ------------
+effect_list_scan_result: list[str] = os.listdir(os.path.join(os.path.dirname(__file__), 'Effects'))
+effect_list_scan_result = [os.path.splitext(i)[0] for i in effect_list_scan_result if i.endswith('.py') and i != '__init__.py']
+effect_list_scan_result.remove('Basefx')  # Basefx is not an effect for use, it's a base class
+availableEffects: list[str] = []
+for effect in effect_list_scan_result:
+    module = importlib.import_module(f'Effects.{effect}')
+    globals()[effect] = getattr(module, effect)
+    availableEffects.append(effect)
+# ----------------------------------------------------------
+# from Effects.CompressorHard import CompressorHard
+# from Effects.ReVolume import ReVolume
+
 from Tracks.InstrumentTrack import InstrumentTrack
 from Song import Song
 from MusicPlayer import MusicPlayer
