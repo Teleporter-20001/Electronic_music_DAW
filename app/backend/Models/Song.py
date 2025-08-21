@@ -1,7 +1,10 @@
+import warnings
+
 import numpy as np
+
 from Tracks.InstrumentTrack import InstrumentTrack
-from Settings import Settings
-    
+from app.common.Settings import Settings
+
 
 class Song:
     def __init__(
@@ -24,19 +27,20 @@ class Song:
         self.returnTracks = None    # todo
         self.mainTrack = None   # todo
 
-    def add_instTrack(self, track: InstrumentTrack):
+    def add_inst_track(self, track: InstrumentTrack):
         if isinstance(track, InstrumentTrack):
             self.instrumentTracks.append(track)
         else:
             raise TypeError("Expected an instance of Track")
 
 
-    def remove_instTrack(self, trackname: str):
+    def remove_inst_track(self, trackname: str):
         if any(t.name == trackname for t in self.instrumentTracks):
             self.instrumentTracks = [t for t in self.instrumentTracks if t.name != trackname]
 
 
     def generate_mixed_waveform(self):
+        warnings.warn('Processor method should not be called in data structure', DeprecationWarning)
         """生成所有音轨混合后的波形"""
         if not self.instrumentTracks:
             return np.array([])

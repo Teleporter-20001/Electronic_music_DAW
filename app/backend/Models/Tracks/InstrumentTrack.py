@@ -1,14 +1,15 @@
-from app.backend.Note import Note
-from app.backend.Instruments.BaseInst import BaseInst
-from app.backend.Tracks.BaseTrack import BaseTrack
+from app.backend.Models.Note import Note
+from app.backend.Models.Instruments.BaseInst import BaseInst
+from app.backend.Models.Tracks.BaseTrack import BaseTrack
 import numpy as np
+import warnings
 
 class InstrumentTrack(BaseTrack):
 
     def __init__(self, name: str, inst: BaseInst) -> None:
-        '''
+        """
         Note: tracks should not have the same name.
-        '''
+        """
         super().__init__(name)
         self.inst: BaseInst = inst
         self.notes: list[Note] = []
@@ -21,7 +22,7 @@ class InstrumentTrack(BaseTrack):
             self.notes.remove(note)
 
     def generate_waveform(self, sample_rate: int, speed: int, beat_unit: int):
-
+        warnings.warn('Processor method should not be called in data structure', DeprecationWarning)
         # 四分音符的时长
         quarter_duration = (60 / speed) * (4 / beat_unit)
         # 全音符的时长

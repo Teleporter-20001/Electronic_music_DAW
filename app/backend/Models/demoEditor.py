@@ -1,7 +1,7 @@
 import os
 import importlib
 
-from app.backend.Note import Note
+from app.backend.Models.Note import Note
 
 
 # ------------- import instruments dynamically -------------
@@ -107,9 +107,9 @@ def main():
         'demo song', 
         130
     )
-    testsong.add_instTrack(melody)
-    testsong.add_instTrack(background_low)
-    testsong.add_instTrack(background_high)
+    testsong.add_inst_track(melody)
+    testsong.add_inst_track(background_low)
+    testsong.add_inst_track(background_high)
     
     player = MusicPlayer()
     player.playSong(testsong)

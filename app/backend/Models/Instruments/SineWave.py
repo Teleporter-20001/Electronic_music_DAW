@@ -1,4 +1,4 @@
-from app.backend.Instruments.BaseInst import BaseInst
+from app.backend.Models.Instruments.BaseInst import BaseInst
 import numpy as np
 from typing import Callable
 

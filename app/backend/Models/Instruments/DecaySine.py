@@ -1,6 +1,6 @@
-from app.backend.Instruments.BaseInst import BaseInst
+from app.backend.Models.Instruments.BaseInst import BaseInst
 import numpy as np
-from app.backend.Settings import Settings
+from app.common.Settings import Settings
 
 class DecaySine(BaseInst):
     def __init__(self, decay_factor: float = 1e-3):

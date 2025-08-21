@@ -1,5 +1,5 @@
 from scipy import signal
-from app.backend.Instruments.BaseInst import BaseInst
+from app.backend.Models.Instruments.BaseInst import BaseInst
 
 class TriangleWave(BaseInst):
     
