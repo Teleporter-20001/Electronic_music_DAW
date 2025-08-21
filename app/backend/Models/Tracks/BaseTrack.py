@@ -18,4 +18,4 @@ class BaseTrack:
             self.effects.remove(effect)
             
     def generate_waveform(self, sample_rate: int, speed: int, beat_unit: int):
-        return np.array([])  # 基类默认返回空波形，子类应重写此方法
+        raise NotImplementedError('BaseTrack should not be instantiated')

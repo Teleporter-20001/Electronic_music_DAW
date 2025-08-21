@@ -1,15 +1,16 @@
-from Song import Song
+from app.backend.Models.Song import Song
 import sounddevice as sd
 import soundfile as sf
 import time
 import os
+import numpy as np
 
 class MusicPlayer:
     
     def __init__(self):
         pass
 
-    def playSong(self, song: Song):
+    def play_song(self, song: Song):
         print(f"Playing song: {song.title}")
 
         mixed_waveform = song.generate_mixed_waveform()
@@ -17,20 +18,7 @@ class MusicPlayer:
             print("No tracks to play.")
             return
 
-        try:
-            sd.play(mixed_waveform, samplerate=song.sample_rate)
-            while sd.get_stream().active:
-                time.sleep(0.1)
-        except KeyboardInterrupt:
-            sd.stop()
-            print("Playback stopped by user.")
-        except Exception as e:
-            print(f"Error occurred during playback: {e}")
-            sd.stop()
-        finally:
-            if sd.get_stream().active:
-                sd.stop()
-                print("Playback finished.")
+        self.play_single_waveform(mixed_waveform, song.sample_rate)
                 
                 
     def save_song_waveform(self, song: Song, filename: str):
@@ -49,3 +37,20 @@ class MusicPlayer:
             print(f"Error saving waveform: {e}")
             
             
+    def play_single_waveform(self, wave: np.ndarray, sample_rate: int):
+
+        try:
+            sd.play(wave, samplerate=sample_rate)
+            while sd.get_stream().active:
+                time.sleep(0.1)
+        except KeyboardInterrupt:
+            sd.stop()
+            print("Playback stopped by user.")
+        except Exception as e:
+            print(f"Error occurred during playback: {e}")
+            sd.stop()
+            raise
+        finally:
+            if sd.get_stream().active:
+                sd.stop()
+                print("Playback finished.")

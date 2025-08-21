@@ -2,7 +2,7 @@ import warnings
 
 import numpy as np
 
-from Tracks.InstrumentTrack import InstrumentTrack
+from app.backend.Models.Tracks.InstrumentTrack import InstrumentTrack
 from app.common.Settings import Settings
 
 
