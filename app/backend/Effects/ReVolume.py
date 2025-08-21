@@ -1,4 +1,4 @@
-from Effects.Basefx import Basefx
+from app.backend.Effects.Basefx import Basefx
 
 class ReVolume(Basefx):
     def __init__(self, factor: float):

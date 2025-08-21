@@ -1,5 +1,5 @@
 from typing import Callable
-from Effects.Basefx import Basefx
+from app.backend.Effects.Basefx import Basefx
 import numpy as np
 
 class CompressorHard(Basefx):

@@ -1,4 +1,4 @@
-from Effects.Basefx import Basefx
+from app.backend.Effects.Basefx import Basefx
 import numpy as np
 
 class BaseTrack:

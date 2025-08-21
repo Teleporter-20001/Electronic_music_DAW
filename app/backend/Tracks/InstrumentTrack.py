@@ -1,8 +1,6 @@
-from Note import Note
-from Instruments.BaseInst import BaseInst
-from Effects.Basefx import Basefx
-from Tracks.BaseTrack import BaseTrack
-from Settings import Settings
+from app.backend.Note import Note
+from app.backend.Instruments.BaseInst import BaseInst
+from app.backend.Tracks.BaseTrack import BaseTrack
 import numpy as np
 
 class InstrumentTrack(BaseTrack):

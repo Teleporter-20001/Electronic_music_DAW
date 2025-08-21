@@ -10,7 +10,7 @@ class Settings:
     default_beat_unit: int = 4
     default_sample_rate: int = 44100
     
-    config_path = os.path.join('data', 'settings.json')
+    config_path = os.path.join('../cache', 'settings.json')
     
     def __init__(self):
         if not os.path.exists(self.config_path):
