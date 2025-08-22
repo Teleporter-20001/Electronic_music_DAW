@@ -44,16 +44,26 @@ class Note:
 
     def get_start_time(self, speed: int, beat_num_per_bar: int) -> float:
         """
-        计算音符结束时的绝对时刻值。
+        计算音符开始时的绝对时刻值。
         Args:
             speed: speed of the song. **以每beat_unit分音符为一拍来衡量。**
             beat_num_per_bar: how many beats are in a single bar
         Returns:
             out: 音符的开始时间（秒）
         """
-        single_bar_duration = beat_num_per_bar * 60 / speed
+        beat_duration = 60 / speed
+        single_bar_duration = beat_num_per_bar * beat_duration
         return (self.starttime.barNum - 1) * single_bar_duration + self.starttime.timeInsideBar
 
     def get_end_time(self, speed: int, beat_num_per_bar: int, beat_unit: int) -> float:
-        whole_length = 60 / speed * 4 / beat_unit * 4
+        """
+        计算音符结束时的绝对时刻值。
+        Args:
+            speed: speed of the song. **以每beat_unit分音符为一拍来衡量。**
+            beat_num_per_bar: how many beats are in a single bar
+            beat_unit: 每beat_unit分音符为一拍
+        Returns:
+            out: 音符的结束时间（秒）
+        """
+        whole_length = 60 / speed * beat_unit
         return self.get_start_time(speed, beat_num_per_bar) + self.duration * whole_length

@@ -1,3 +1,6 @@
+from functools import total_ordering
+
+@total_ordering
 class BeatTime:
     def __init__(self, bar_num: int, time_inside_bar: float):
         """
